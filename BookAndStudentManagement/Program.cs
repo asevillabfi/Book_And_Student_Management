@@ -72,12 +72,12 @@ namespace BookAndStudentManagement
             // Book operations
             var book = new Book
             {
-                Title = "Sample Book",
-                Author = "John Doe",
-                Pages = 300,
-                Genre = "Fiction",
-                Publisher = "Sample Publisher",
-                ISBN = "9781234567890"
+                Title = "All The Bright Places",
+                Author = "Jennifer Niven",
+                Pages = 388,
+                Genre = "Novel",
+                Publisher = "Knopf Publishing Group",
+                ISBN = "9780385755887"
             };
 
             // Write book details to a file
@@ -95,7 +95,7 @@ namespace BookAndStudentManagement
             Console.WriteLine($"ISBN: {readBook.ISBN}");
 
             // Email extraction example
-            string text = "Contact us at support@example.com or admin@example.org.";
+            string text = "Contact us at library@gmail.com or bookadmin@mail.org.";
             // Use Regex to find email addresses in the text
             foreach (Match match in Regex.Matches(text, @"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"))
                 Console.WriteLine(match.Value);
