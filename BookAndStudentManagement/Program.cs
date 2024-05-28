@@ -58,24 +58,16 @@ namespace BookAndStudentManagement
         // Method to read book details from a file and create a Book object
         public static Book ReadFromFile(string filePath)
         {
-            try
+            var lines = File.ReadAllLines(filePath);
+            return new Book
             {
-                var lines = File.ReadAllLines(filePath);
-                return new Book
-                {
-                    Title = lines[0].Split(": ")[1],
-                    Author = lines[1].Split(": ")[1],
-                    Pages = int.Parse(lines[2].Split(": ")[1]),
-                    Genre = lines[3].Split(": ")[1],
-                    Publisher = lines[4].Split(": ")[1],
-                    ISBN = lines[5].Split(": ")[1]
-                };
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error reading book details: " + e.Message);
-                return null; // Return null if an error occurs
-            }
+                Title = lines[0].Split(": ")[1],
+                Author = lines[1].Split(": ")[1],
+                Pages = int.Parse(lines[2].Split(": ")[1]),
+                Genre = lines[3].Split(": ")[1],
+                Publisher = lines[4].Split(": ")[1],
+                ISBN = lines[5].Split(": ")[1]
+            };
         }
     }
 
@@ -108,20 +100,13 @@ namespace BookAndStudentManagement
             // Read book details from the file
             var readBook = Book.ReadFromFile("book.txt");
 
-            if (readBook != null)
-    {
-        // Print book details
-        Console.WriteLine($"Title: {readBook.Title}");
-        Console.WriteLine($"Author: {readBook.Author}");
-        Console.WriteLine($"Pages: {readBook.Pages}");
-        Console.WriteLine($"Genre: {readBook.Genre}");
-        Console.WriteLine($"Publisher: {readBook.Publisher}");
-        Console.WriteLine($"ISBN: {readBook.ISBN}");
-    }
-    else
-    {
-        Console.WriteLine("Book details could not be read.");
-    }
+            // Print book details
+            Console.WriteLine($"Title: {readBook.Title}");
+            Console.WriteLine($"Author: {readBook.Author}");
+            Console.WriteLine($"Pages: {readBook.Pages}");
+            Console.WriteLine($"Genre: {readBook.Genre}");
+            Console.WriteLine($"Publisher: {readBook.Publisher}");
+            Console.WriteLine($"ISBN: {readBook.ISBN}");
 
             // Email extraction example
             string text = "Contact us at library@gmail.com or bookadmin@mail.org.";
