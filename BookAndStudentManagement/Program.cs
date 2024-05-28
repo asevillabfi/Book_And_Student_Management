@@ -15,16 +15,30 @@ namespace BookAndStudentManagement
         public string Publisher { get; set; }  
 
         private string isbn;
-        // Property for ISBN with validation using Regex
+        // Property for ISBN with validation using Regex and error handling
         public string ISBN
         {
             get => isbn;
             set
             {
-                if (!Regex.IsMatch(value, @"^(97(8|9))?\d{9}(\d|X)$"))
-                    throw new ArgumentException("Invalid ISBN.");
-                isbn = value;
+                if (IsValidISBN(value))
+                {
+                    isbn = value;
+                }
+                else
+                {
+                    if (isbn != value)
+                    {
+                        Console.WriteLine("Invalid ISBN.");
+                    }
+                }
             }
+        }
+
+        // Method to validate ISBN using Regex
+        private bool IsValidISBN(string isbn)
+        {
+            return Regex.IsMatch(isbn, @"^(97(8|9))?\d{9}(\d|X)$");
         }
 
         // Method to write book details to a file
@@ -44,16 +58,24 @@ namespace BookAndStudentManagement
         // Method to read book details from a file and create a Book object
         public static Book ReadFromFile(string filePath)
         {
-            var lines = File.ReadAllLines(filePath);
-            return new Book
+            try
             {
-                Title = lines[0].Split(": ")[1],
-                Author = lines[1].Split(": ")[1],
-                Pages = int.Parse(lines[2].Split(": ")[1]),
-                Genre = lines[3].Split(": ")[1],
-                Publisher = lines[4].Split(": ")[1],
-                ISBN = lines[5].Split(": ")[1]
-            };
+                var lines = File.ReadAllLines(filePath);
+                return new Book
+                {
+                    Title = lines[0].Split(": ")[1],
+                    Author = lines[1].Split(": ")[1],
+                    Pages = int.Parse(lines[2].Split(": ")[1]),
+                    Genre = lines[3].Split(": ")[1],
+                    Publisher = lines[4].Split(": ")[1],
+                    ISBN = lines[5].Split(": ")[1]
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error reading book details: " + e.Message);
+                return null; // Return null if an error occurs
+            }
         }
     }
 
@@ -86,13 +108,20 @@ namespace BookAndStudentManagement
             // Read book details from the file
             var readBook = Book.ReadFromFile("book.txt");
 
-            // Print book details
-            Console.WriteLine($"Title: {readBook.Title}");
-            Console.WriteLine($"Author: {readBook.Author}");
-            Console.WriteLine($"Pages: {readBook.Pages}");
-            Console.WriteLine($"Genre: {readBook.Genre}");
-            Console.WriteLine($"Publisher: {readBook.Publisher}");
-            Console.WriteLine($"ISBN: {readBook.ISBN}");
+            if (readBook != null)
+    {
+        // Print book details
+        Console.WriteLine($"Title: {readBook.Title}");
+        Console.WriteLine($"Author: {readBook.Author}");
+        Console.WriteLine($"Pages: {readBook.Pages}");
+        Console.WriteLine($"Genre: {readBook.Genre}");
+        Console.WriteLine($"Publisher: {readBook.Publisher}");
+        Console.WriteLine($"ISBN: {readBook.ISBN}");
+    }
+    else
+    {
+        Console.WriteLine("Book details could not be read.");
+    }
 
             // Email extraction example
             string text = "Contact us at library@gmail.com or bookadmin@mail.org.";
